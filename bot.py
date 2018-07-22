@@ -25,9 +25,13 @@ def remove_emoji(string):
 
 # DEV : Replace this if using heroku
 #token = os.environ["TELEGRAM_TOKEN"]
-f = open("token", "r")
+f = open("IDtoken", "r")
 if f.mode == "r":
     token = f.read()
+	
+f2 = open("IDchat", "r")
+if f2.mode == "r":
+    IDchat = f2.read()
 
 itemCodes = {
     # 
@@ -466,7 +470,7 @@ def catch_error(f):
 
             template = "CW - ERROR \nUser: {2} ({3})\nAn exception of type {0} occurred\nArguments:\n{1!r}\nText :\n{4}"
             message = template.format(type(e).__name__, e.args, firstname, username, text)
-            bot.send_message(chat_id='-1001213337130',
+            bot.send_message(chat_id=IDchat,
                              text=message, parse_mode = ParseMode.HTML)
     return wrap
 
@@ -668,7 +672,7 @@ def process(bot, update):
         global errorCount
         errorCount = errorCount+1
         update.message.reply_text("Sorry, I don't understand your request. Please use /help for more information")
-        bot.sendMessage(chat_id='-1001213337130',\
+        bot.sendMessage(chat_id=IDchat,\
             text = 'CW - Unknown text received.\
                     \n<b>Sender</b> : \
                     \n<pre>{} ({})</pre>\
@@ -689,15 +693,15 @@ def error(bot, update, context = ""):
         return
     except TelegramError:
         logger.warning('Update "%s" caused error "%s"', update, context)
-        bot.sendMessage(chat_id='-1001213337130', text = 'CW - <b>Telegram Error</b>\n Update "{}" caused error "{}"'.format(update, context), parse_mode = "HTML")
+        bot.sendMessage(chat_id=IDchat, text = 'CW - <b>Telegram Error</b>\n Update "{}" caused error "{}"'.format(update, context), parse_mode = "HTML")
         return
     except Exception:
         logger.warning('Update "%s" caused error "%s"', update, context)
-        bot.sendMessage(chat_id='-1001213337130', text = 'CW - <b>Error</b>\n Update "{}" caused error "{}"'.format(update, context), parse_mode = "HTML")
+        bot.sendMessage(chat_id=IDchat, text = 'CW - <b>Error</b>\n Update "{}" caused error "{}"'.format(update, context), parse_mode = "HTML")
 
 def status(bot, job):
     messID = 287 #276 for dev, #287 for live
-    bot.edit_message_text(  chat_id = '-1001213337130',
+    bot.edit_message_text(  chat_id = IDchat,
                             message_id = messID, 
                             text = "CW STATUS - `OK` : `{}`\nERRORS : **{}**\nPROCESSED : **{}**".format(
                                 datetime.now().time().strftime('%H:%M'), 
@@ -708,11 +712,11 @@ def status(bot, job):
 
 def reset(bot, update):
     global proccessCount, errorCount
-    lastID = bot.sendMessage(chat_id='-1001213337130', text = 'CW - Trackers reset').message_id
+    lastID = bot.sendMessage(chat_id=IDchat, text = 'CW - Trackers reset').message_id
 
     for messID in range(287+1, lastID):#276 for dev, #287 for live
         try:
-            bot.deleteMessage(chat_id='-1001213337130', message_id = messID)
+            bot.deleteMessage(chat_id=IDchat, message_id = messID)
         except TelegramError:
             continue
 
