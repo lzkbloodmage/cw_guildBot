@@ -25,9 +25,13 @@ def remove_emoji(string):
 
 # DEV : Replace this if using heroku
 #token = os.environ["TELEGRAM_TOKEN"]
-f = open("token", "r")
+f = open("IDtoken", "r")
 if f.mode == "r":
     token = f.read()
+	
+f2 = open("IDchat", "r")
+if f2.mode == "r":
+    IDchat = f2.read()
 
 itemCodes = {
     # 
@@ -129,7 +133,7 @@ itemCodes = {
     "vial of morph" : "p19",
     "potion of morph" : "p20",
     "bottle of morph" : "p21",
-    "vial of Ð¾blivion" : "pl1",
+    "vial of оblivion" : "pl1",
     "bottle of oblivion": "pl3",
     #
     # == miscellaneous ==
@@ -146,10 +150,10 @@ itemCodes = {
     "steel arrows pack" : "511",
     "silver arrow" : "512",
     "silver arrows pack": "513",
-    "ðŸŽŸgift coupon 'pig'": "514",
-    "ðŸŽŸgift coupon 'horse'": "515",
-    "ðŸŽŸgift coupon 'owl'": "516",
-    "ðŸŽŸgift coupon 'mouse'": "517",
+    "🎟gift coupon 'pig'": "514",
+    "🎟gift coupon 'horse'": "515",
+    "🎟gift coupon 'owl'": "516",
+    "🎟gift coupon 'mouse'": "517",
     "hay": "518",
     "corn": "519",
     "hamsters": "520",
@@ -197,7 +201,7 @@ itemCodes = {
     "clarity circlet":"a37",
     "clarity shoes":"a38",
     "clarity bracers":"a39",
-    "âœï¸pencil of truth":"a40",
+    "✏️pencil of truth":"a40",
     "bard's cape":"a41",
     "crusader armor":"a45",
     "crusader helmet":"a46",
@@ -350,18 +354,18 @@ itemCodes = {
     "divine bracers recipe":"r58",
     "durable cloak recipe":"r60",
     "blessed cloak recipe":"r61",
-    "ðŸ“•scroll of rage":"s01",
-    "ðŸ“•scroll of peace":"s02",
-    "ðŸ“—scroll of rage":"s03",
-    "ðŸ“—scroll of peace":"s04",
-    "ðŸ“˜scroll of rage":"s05",
-    "ðŸ“˜scroll of peace":"s06",
-    "ðŸ“•rare scroll of rage":"s11",
-    "ðŸ“•rare scroll of peace":"s12",
-    "ðŸ“—rare scroll of rage":"s13",
-    "ðŸ“—rare scroll of peace":"s14",
-    "ðŸ“˜rare scroll of rage":"s15",
-    "ðŸ“˜rare scroll of peace":"s16",
+    "📕scroll of rage":"s01",
+    "📕scroll of peace":"s02",
+    "📗scroll of rage":"s03",
+    "📗scroll of peace":"s04",
+    "📘scroll of rage":"s05",
+    "📘scroll of peace":"s06",
+    "📕rare scroll of rage":"s11",
+    "📕rare scroll of peace":"s12",
+    "📗rare scroll of rage":"s13",
+    "📗rare scroll of peace":"s14",
+    "📘rare scroll of rage":"s15",
+    "📘rare scroll of peace":"s16",
     "wooden sword":"w01",
     "short sword":"w02",
     "long sword":"w03",
@@ -409,12 +413,12 @@ itemCodes = {
     "ghost dagger":"w45",
     "lion knife":"w46",
     "loyalty trophy":"tlt",
-    "ðŸŽ‚cake":"e6",
-    "ðŸŽ‚special cake":"e7",
-    "ðŸŽ‚rare cake":"e8",
-    "ðŸ«chocolate":"e9",
-    "ðŸ’valentine's card":"vc",
-    "ðŸŽassistant's box":"bx1",
+    "🎂cake":"e6",
+    "🎂special cake":"e7",
+    "🎂rare cake":"e8",
+    "🍫chocolate":"e9",
+    "💝valentine's card":"vc",
+    "🎁assistant's box":"bx1",
     "zombie box":"bx3",
     "zombie chest":"ch1",
     "hunter kit":"hk",
@@ -427,12 +431,12 @@ itemCodes = {
     "silver blood":"psb",
     "vial of defiance":"pvd",
     "elder's recommendation":"er",
-    "ðŸ¦Œdeerhorn earloom":"tde",
-    "ðŸ‰dragonscale earloom":"tdr",
-    "ðŸºwolfpack earloom":"two",
-    "ðŸ¥”potato earloom":"tpo",
-    "ðŸ¦ˆsharkteeth earloom":"tsh",
-    "ðŸ¦…highnest earloom":"thi"
+    "🦌deerhorn earloom":"tde",
+    "🐉dragonscale earloom":"tdr",
+    "🐺wolfpack earloom":"two",
+    "🥔potato earloom":"tpo",
+    "🦈sharkteeth earloom":"tsh",
+    "🦅highnest earloom":"thi"
 }
 
 # Enable logging
@@ -466,7 +470,7 @@ def catch_error(f):
 
             template = "CW - ERROR \nUser: {2} ({3})\nAn exception of type {0} occurred\nArguments:\n{1!r}\nText :\n{4}"
             message = template.format(type(e).__name__, e.args, firstname, username, text)
-            bot.send_message(chat_id='-1001308072830',
+            bot.send_message(chat_id=IDchat,
                              text=message, parse_mode = ParseMode.HTML)
     return wrap
 
@@ -561,12 +565,12 @@ def process(bot, update):
     textLines = update.message.text.splitlines()
 
     #Individual recipe. Waiting for action
-    if "ðŸ“ƒ" in textLines[0] or "(recipe)" in textLines[0]:
+    if "📃" in textLines[0] or "(recipe)" in textLines[0]:
         update.message.reply_text("Please reply to the recipe text with [d]eposit or [w]ithdraw ")
         return
 
     #Storage
-    if "ðŸ“¦" in textLines[0]:
+    if "📦" in textLines[0]:
         textLines = textLines[1:]
 
     #Guild Warehouse
@@ -580,8 +584,8 @@ def process(bot, update):
         boolMissing = True
     
     #Brewery
-    elif "/aa_" in textLines[0]:
-        print("hello")
+    elif "/aa" in textLines[0]:
+        textLines = [line[7:] for line in textLines]
 
     #Workbench
     elif "/a_" in textLines[0]:
@@ -668,7 +672,7 @@ def process(bot, update):
         global errorCount
         errorCount = errorCount+1
         update.message.reply_text("Sorry, I don't understand your request. Please use /help for more information")
-        bot.sendMessage(chat_id='-1001308072830',\
+        bot.sendMessage(chat_id=IDchat,\
             text = 'CW - Unknown text received.\
                     \n<b>Sender</b> : \
                     \n<pre>{} ({})</pre>\
@@ -689,15 +693,15 @@ def error(bot, update, context = ""):
         return
     except TelegramError:
         logger.warning('Update "%s" caused error "%s"', update, context)
-        bot.sendMessage(chat_id='-1001308072830', text = 'CW - <b>Telegram Error</b>\n Update "{}" caused error "{}"'.format(update, context), parse_mode = "HTML")
+        bot.sendMessage(chat_id=IDchat, text = 'CW - <b>Telegram Error</b>\n Update "{}" caused error "{}"'.format(update, context), parse_mode = "HTML")
         return
     except Exception:
         logger.warning('Update "%s" caused error "%s"', update, context)
-        bot.sendMessage(chat_id='-1001308072830', text = 'CW - <b>Error</b>\n Update "{}" caused error "{}"'.format(update, context), parse_mode = "HTML")
+        bot.sendMessage(chat_id=IDchat, text = 'CW - <b>Error</b>\n Update "{}" caused error "{}"'.format(update, context), parse_mode = "HTML")
 
 def status(bot, job):
     messID = 287 #276 for dev, #287 for live
-    bot.edit_message_text(  chat_id = '-1001308072830',
+    bot.edit_message_text(  chat_id = IDchat,
                             message_id = messID, 
                             text = "CW STATUS - `OK` : `{}`\nERRORS : **{}**\nPROCESSED : **{}**".format(
                                 datetime.now().time().strftime('%H:%M'), 
@@ -708,11 +712,11 @@ def status(bot, job):
 
 def reset(bot, update):
     global proccessCount, errorCount
-    lastID = bot.sendMessage(chat_id='-1001308072830', text = 'CW - Trackers reset').message_id
+    lastID = bot.sendMessage(chat_id=IDchat, text = 'CW - Trackers reset').message_id
 
     for messID in range(287+1, lastID):#276 for dev, #287 for live
         try:
-            bot.deleteMessage(chat_id='-1001308072830', message_id = messID)
+            bot.deleteMessage(chat_id=IDchat, message_id = messID)
         except TelegramError:
             continue
 
